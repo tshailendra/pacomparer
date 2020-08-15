@@ -4,6 +4,7 @@
 	"description": "PowerApps Code Comparer",
 	"publisher": "ShailendraTurlapati",
 	"version": "0.0.5",
+	"icon": "images/icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/tshailendra/pacomparer"
