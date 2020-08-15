@@ -1,0 +1,54 @@
+{
+	"name": "powerappscodecomparer",
+	"displayName": "PowerApps Code Comparer",
+	"description": "PowerApps Code Comparer",
+	"publisher": "ShailendraTurlapati",
+	"version": "0.0.5",
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "rgb(248,153,56)",
+		"theme": "light"
+	},
+	"engines": {
+		"vscode": "^1.47.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:powerappscodecomparer.pacodecomparer"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "powerappscodecomparer.pacodecomparer",
+				"title": "PowerApps Code Comparer"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^8.0.1",
+		"@types/node": "^14.0.27",
+		"@types/vscode": "^1.47.0",
+		"@typescript-eslint/eslint-plugin": "^2.30.0",
+		"@typescript-eslint/parser": "^2.30.0",
+		"glob": "^7.1.6",
+		"jszip": "^3.5.0",
+		"mocha": "^7.1.2",
+		"typescript": "^3.9.7",
+		"vscode-test": "^1.4.0"
+	},
+	"dependencies": {
+		"jszip": "^3.5.0"
+	}
+}
