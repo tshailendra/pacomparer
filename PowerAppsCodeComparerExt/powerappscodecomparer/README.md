@@ -10,7 +10,7 @@ Launch VS Code Quick Open (Ctrl + P), paste the following command and press ente
 $ ext install vs-code powerappscodecomparer
 ```
 
-Or press Ctrl + Shift + X and search for __powerappscodecomparer__
+Or press Ctrl + Shift + X and search for __"PowerApps Code Comparer"__
 
 
 ## How to use
@@ -22,7 +22,8 @@ Or press Ctrl + Shift + X and search for __powerappscodecomparer__
 - Select *.msapp files downloaded
 
 
-![run.gif](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/run.gif)
+
+![images/run.gif](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/run.gif)
 
 ## Known Issues
 
