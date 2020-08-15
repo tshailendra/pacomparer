@@ -146,7 +146,7 @@ function storeControlData() {
 
 	panel.webview.html = htmlmessage(`start to store control data ...`);
 	if (tempAllFoldersExtracted[0] == tempAllFoldersExtracted[1]) {
-		//console.log(tempFolderList);
+
 		let oFiles: string[] = fs.readdirSync(tempFolderList[0], 'utf8');
 		let nFiles: string[] = fs.readdirSync(tempFolderList[1], 'utf8');
 
@@ -207,14 +207,6 @@ function storeControlData() {
 					vscode.window.showErrorMessage('Error adding extra rows - ' + err);
 					return;
 				}
-
-				 try {
-					//updateRowIndex(ofName, nfName);
-				}
-				catch (err) {
-					vscode.window.showErrorMessage('Error while checking differences. Cannot proceed further. ' + err);
-					return;
-				} 
 			}
 		}
 
@@ -223,7 +215,6 @@ function storeControlData() {
 		if (view.createHTML(tempFolderList)) {
 			screenList = view.getScreenNames('o', tempFolderList[0]);
 
-			//vscode.window.showInformationMessage("All done!!! Ready to view");
 			let message = screenList[0];   //"App.html";
 			let oFileContent = fs.readFileSync(path.join(tempFolderList[0], 'o' + message), 'utf8');
 			let nFileContent = fs.readFileSync(path.join(tempFolderList[1], 'n' + message), 'utf8');
@@ -473,11 +464,6 @@ function insertDummyRows(jsonNode: any, rowIndex: number, SCREEN_NAME: string, T
 }
 
 function readJsonFile(jFinalData: any, data: any, foldername: string, filename: string, sequence: any) {
-
-	// f1:"SCREEN_NAME", f2:"TREE_PATH", f3:"PARENT_KEY", f4:"CHILD_KEY", f5:"PROP_NAME", f6:"PROP_VALUE", f7:"COMPARED", f8:"DIFF_FOUND"
-
-	// temp/msappfileV1/screenname
-
 	let screenName: string = data.TopParent.Name;
 	let tempseq = sequence.No++;
 	let actualFileName: string = "";
@@ -493,7 +479,6 @@ function readJsonFile(jFinalData: any, data: any, foldername: string, filename: 
 	if (readAllProperties(data.TopParent, screenName, tempseq, screenName, jFinalData, sequence)) {
 		try {
 			fs.writeFileSync(path.join(foldername, filename + '.json'), `[${jFinalData}]`, 'utf8');
-			//console.log(jFinalData);
 		} catch (err) {
 			vscode.window.showErrorMessage('Unable to save data. ' + err);
 		}
@@ -520,11 +505,7 @@ function readAllProperties(jdata: any, treePath: string, childKey: number, scree
 					if ((typeof (tdata[index]) === 'object')) {
 						arrayProcessed = true;
 						if (key == 'Rules') {
-							//let tempArrChildKey: number = sequence.No++;
 							let oJData: any = tdata[index];
-
-							//addDataToJson(jFinalData, screenName, treePath + '|' + key, tempArrChildKey, parentArrayKey, oJData.Property, oJData.Property, 'N', 'N');
-							//readAllProperties(oJData, treePath + '|' + key + '|' + oJData.Property, tempArrChildKey, screenName, jFinalData, sequence);
 							let props: string = "";
 							for (let ckey in oJData) {
 								props += `${ckey}: ${oJData[ckey]}|`;
@@ -538,17 +519,12 @@ function readAllProperties(jdata: any, treePath: string, childKey: number, scree
 							let tempArrChildKey: number = sequence.No++;
 							let oJData: any = tdata[index];
 
-							//	addDataToJson(jFinalData, screenName, treePath + '|' + key, tempArrChildKey, parentArrayKey, oJData.InvariantPropertyName, oJData.InvariantPropertyName, 'N', 'N');
-							//readAllProperties(oJData, treePath + '|' + key + '|' + oJData.InvariantPropertyName, tempArrChildKey, screenName, jFinalData, sequence);
-
 							let props: string = "";
 							for (let ckey in oJData) {
 								props += `${ckey}: ${oJData[ckey]}|`;
 							}
 
 							currentParentKey = sequence.No++;
-							//	addDataToJson(jFinalData, screenName, treePath + '|' + key + '|' + oJData.InvariantPropertyName, currentParentKey, tempArrChildKey, oJData.InvariantPropertyName, props, 'N', 'N');
-
 						}
 						else if (key == 'Children') {
 							let tempArrChildKey: number = sequence.No++;
@@ -585,9 +561,6 @@ function readAllProperties(jdata: any, treePath: string, childKey: number, scree
 					else { // this shud be else if jvalue
 						props += `${tdata[index]}|`;
 					}
-
-					//currentParentKey = sequence.No++;
-					//addDataToJson(jFinalData, screenName, treePath + '|' + key, currentParentKey, parentArrayKey, tdata[index], tdata[index], 'N', 'N');
 				}
 
 				if (!arrayProcessed) {
@@ -626,16 +599,6 @@ function readAllProperties(jdata: any, treePath: string, childKey: number, scree
 					let tempArrChildKey = sequence.No++;
 					addDataToJson(jFinalData, screenName, treePath + '|' + key, tempArrChildKey, currentParentKey, key, props, 'N', 'N');
 				}
-
-				/* let containsData: Boolean = false;
-				for (let tk in tdata) {
-					containsData = true;
-					break;
-				}
-
-				if (containsData) {
-					readAllProperties(tdata, treePath + '|' + key, currentParentKey, screenName, jFinalData, sequence);
-				} */
 			}
 			// key:Value pair 
 			else {
@@ -741,23 +704,6 @@ function updateRowIndex(ofName: string, nfName: string) {
 	} catch (err) {
 		vscode.window.showErrorMessage('Unable to save data. ' + err);
 	}
-
-/* 	let csvData = "f0, f1, f2, f3, f4, f5, f6, f7, f8\r\n";
-	for (let key in oJData) {
-		csvData += `"${oJData[key].f0}", "${oJData[key].f1}", "${oJData[key].f2}", "${oJData[key].f3}", "${oJData[key].f4}", "${oJData[key].f5}", "${oJData[key].f6}", "${oJData[key].f7}", "${oJData[key].f8}" \r\n`;
-	}
-
-	let filename = `o${oJData[0].f1}.csv`;
-	fs.writeFileSync(path.join(tempFolder, filename), csvData, 'utf8');
-
-	csvData = "f0, f1, f2, f3, f4, f5, f6, f7, f8\r\n";
-	for (let key in nJData) {
-		csvData += `"${nJData[key].f0}", "${nJData[key].f1}", "${nJData[key].f2}", "${nJData[key].f3}", "${nJData[key].f4}", "${nJData[key].f5}", "${nJData[key].f6}", "${nJData[key].f7}", "${nJData[key].f8}" \r\n`;
-	}
-
-	filename = `n${oJData[0].f1}.csv`;
-	fs.writeFileSync(path.join(tempFolder, filename), csvData, 'utf8'); */
-
 }
 
 // this method is called when your extension is deactivated
