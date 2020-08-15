@@ -15,11 +15,14 @@ Or press Ctrl + Shift + X and search for __powerappscodecomparer__
 
 ## How to use
 
+- Download the PowerApps files required to compare  
 - Launch Command Palette _(Ctrl+Shift+A or P)_
 - Type __PowerApps Code Comparer__
 - Select/Click __PowerApps Code Comparer__
+- Select *.msapp files downloaded
 
-![images/run.gif](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/run.gif)
+
+![run.gif](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/run.gif)
 
 ## Known Issues
 
