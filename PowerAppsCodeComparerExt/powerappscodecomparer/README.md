@@ -19,7 +19,7 @@ Or press Ctrl + Shift + X and search for __powerappscodecomparer__
 - Type __PowerApps Code Comparer__
 - Select/Click __PowerApps Code Comparer__
 
-![run.gif](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/run.gif)
+![images/run.gif](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/run.gif)
 
 ## Known Issues
 
