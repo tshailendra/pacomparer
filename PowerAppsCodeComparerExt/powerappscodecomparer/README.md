@@ -27,7 +27,7 @@ Or press Ctrl + Shift + X and search for __"PowerApps Code Comparer"__
 
 ## Known Issues
 
-The code is not tested for compnents developed using pcf.
+The code is not tested for components developed using pcf.
 
 ## Release Notes
 
