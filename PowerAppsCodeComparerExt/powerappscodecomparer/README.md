@@ -36,13 +36,5 @@ Or press Ctrl + Shift + X and search for __"PowerApps Code Comparer"__
 
 The code is not tested for components developed using pcf.
 
-## Release Notes
 
-### 0.0.6
-
-Added background color to the selected row before opening popup window.
-
-### 0.0.5
-
-Initial release.
 
