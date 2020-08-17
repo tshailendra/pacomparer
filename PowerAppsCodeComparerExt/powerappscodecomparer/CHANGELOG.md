@@ -1,7 +1,10 @@
 # Change Log
 
-None
+## 0.0.6
 
-## [Unreleased]
+Added background color to the selected row before opening popup window.
+
+
+## 0.0.5
 
 - Initial release
