@@ -7,7 +7,7 @@
 	"icon": "images/icon.png",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/tshailendra/pacomparer"
+		"url": "https://github.com/tshailendra/pacomparer/tree/master/PowerAppsCodeComparerExt/powerappscodecomparer"
 	},
 	"galleryBanner": {
 		"color": "rgb(248,153,56)",
