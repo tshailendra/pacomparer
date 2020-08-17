@@ -1,14 +1,14 @@
-var css = function (data1: string, data2: string, screenList: any, selectedScreen : string) {
+var css = function (data1: string, data2: string, screenList: any, selectedScreen: string) {
 
     let dropdown: string = `<select id="screennames" onchange="screenchange()"><option value=""></option>`;
     if (screenList.length > 0) {
         for (let idx = 0; idx < screenList.length; idx++) {
             let text = screenList[idx].split('.');
-            if(selectedScreen == screenList[idx]) {
+            if (selectedScreen == screenList[idx]) {
                 dropdown += `<option selected value="${screenList[idx]}">${text[0]}</option>`;
             }
-            else{
-            dropdown += `<option value="${screenList[idx]}">${text[0]}</option>`;
+            else {
+                dropdown += `<option value="${screenList[idx]}">${text[0]}</option>`;
             }
         }
     }
@@ -40,19 +40,21 @@ html, body { height: 100%; margin: 0px; color: black; background-color: white;}
 .screen { background-color: blueviolet; font-weight: bold; color: white; font-size: 14px }
 .value { max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.modal { display: none; position: fixed; z-index: 1; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+.modal { display: none;  position: fixed; z-index: 1; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
 .mcontent { position: relative; background-color: #fefefe; margin: auto; padding: 0; border: 1px solid #888; width: 80%; box-shadow: 0 4px 8px 0 rgba(150,150,0,0.6),0 6px 20px 0 rgba(150,150,0,0.19); }
 .header { font-size: 20px; font-weight: bold; color: blue; }
 .header2 { margin:20px; font-size: 18px;  font-weight: bold; }
 .exit { color: red; float: right; }
 .exit:hover, .exit:focus { color: red; text-decoration: none; cursor: pointer; }
-.mbody { padding: 2px 8px; }
+.mbody { padding: 2px 8px;}
 
 .D { background-color: lightcoral; border: 1px solid lightcoral; }
 .A { background-color: darkseagreen; border: 1px solid darkseagreen; }
 .Y { background-color: gainsboro; border: 1px solid gainsboro; }
 .setting { line-height: 12px; padding: 5px; border-radius: 10px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; display: inline-block; width: 80px; text-align: center; }
 .countsetting { vertical-align: central; line-height: 8px; padding: 5px; border-radius: 10px; border-bottom-left-radius: 0px; border-top-left-radius: 0px; display: inline-block; width: 30px; text-align: center; background-color: white; }
+.selectedrow { background-color: aquamarine; }
+
 </style>
 
 <div class="flex-topbottom">
@@ -84,8 +86,10 @@ ${data2}
 <div id="myModal" class="modal">
 <div class="mcontent">
 <div class="mbody">
+
 <table width="100%">
-    <tr><td valign="middle" class="header" colspan="2"><span id="idtreepath">{TREE PATH}</span><span onclick="exitModal()" class="exit">&times;</span></td></tr>
+    <tr><td valign="middle" class="header selectedrow" colspan="2"><span id="idtreepath">{TREE PATH}</span><span onclick="exitModal()" class="exit">&times;</span></td></tr>
+    <tr><td>&nbsp;</td></tr>
     <tr class="header2"><td width="50%" id="opname">{PROPERTY_NAME 1}</td><td width="50%" id="npname">{PROPERTY_NAME 2}</td></tr>
 </table>
 <br>
@@ -98,6 +102,7 @@ ${data2}
 <table width="100%">
 <tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 </table>
+
 </div>
 </div>
 </div>
@@ -157,25 +162,51 @@ const opvalue = document.getElementById("opvalue");
 const npname = document.getElementById("npname");
 const npvalue = document.getElementById("npvalue");
 
+let selectedrowleft1 = null;
+let selectedrowleft2 = null;
+let selectedrowright1 = null;
+let selectedrowright2 = null;
+
+
 function dc(r) {
     modal.style.display = "block";
     var rows = document.getElementsByName(r.getAttribute("name"));
     idtreepath.innerText = r.firstElementChild.dataset.f2;
     opname.innerText = rows[0].firstElementChild.innerText;
     opvalue.innerHTML = rows[0].lastElementChild.innerText.split('|').join('<br>');
-
+    selectedrowleft1 = rows[0].firstElementChild;
+    selectedrowleft2 = rows[0].lastElementChild;
+    
     if (rows.length > 2) {
         npname.innerText = rows[2].firstElementChild.innerText;
         npvalue.innerHTML = rows[2].lastElementChild.innerText.split('|').join('<br>');
+
+        selectedrowright1 = rows[2].firstElementChild;
+        selectedrowright2 = rows[2].lastElementChild;
+
     }
     else {
         npname.innerText = rows[1].firstElementChild.innerText;
         npvalue.innerHTML = rows[1].lastElementChild.innerText.split('|').join('<br>');
+
+        selectedrowright1 = rows[1].firstElementChild;
+        selectedrowright2 = rows[1].lastElementChild;
     }
+
+    selectedrowleft1.classList.add('selectedrow');
+    selectedrowleft2.classList.add('selectedrow');
+    selectedrowright1.classList.add('selectedrow');
+    selectedrowright2.classList.add('selectedrow');
 }
 
 function exitModal() {
     modal.style.display = "none";
+
+    selectedrowleft1.classList.remove('selectedrow');
+    selectedrowleft2.classList.remove('selectedrow');
+    selectedrowright1.classList.remove('selectedrow');
+    selectedrowright2.classList.remove('selectedrow');
+
 }
 
 const idaddcount = document.getElementById('addcount');
