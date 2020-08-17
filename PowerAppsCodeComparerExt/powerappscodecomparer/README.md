@@ -28,7 +28,7 @@ Or press Ctrl + Shift + X and search for __"PowerApps Code Comparer"__
 
 - Double click on any row to view the details of the selected row.
 
-![popup](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/popup.png?raw=true)
+![popup](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/popup.PNG?raw=true)
 
 
 
