@@ -25,6 +25,13 @@ Or press Ctrl + Shift + X and search for __"PowerApps Code Comparer"__
 
 ![run](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/run.gif?raw=true)
 
+
+- Double click on any row to view the details of the selected row.
+
+![popup](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/popup.png?raw=true)
+
+
+
 ## Known Issues
 
 The code is not tested for components developed using pcf.
