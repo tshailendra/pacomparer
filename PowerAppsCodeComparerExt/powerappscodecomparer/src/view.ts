@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 
-//const css = require("./htmlcontainer");
 const fs = require("fs");
 const path = require("path");
 
@@ -26,10 +25,10 @@ function initiateHTMLFileGen(prefix: string, folderLocation: string) {
     fileList.forEach(function (file: string) {
         if (file.startsWith(prefix)) {
             let jData = JSON.parse(fs.readFileSync(path.join(folderLocation, file), 'utf8'));
-            let html : any = {text: ''}
+            let html: any = { text: '' }
 
             html.text += `<table class="main" width="100%" align="center" cellspacing="1" style=" background-color:black; table-layout: fixed;">`;
-            html.text += `<tr name="${(jData[0].f0)-1}" onclick='rowstatus("${jData[0].f0}")'><td class="pk screen" colspan="2">${jData[0].f5}</td></tr>`;
+            html.text += `<tr name="${(jData[0].f0) - 1}" onclick='rowstatus("${jData[0].f0}")'><td class="pk screen" colspan="2">${jData[0].f5}</td></tr>`;
             let childElements = jData.filter((item: any) => item.f4 == jData[0].f3);
             if (childElements.length > 0) {
                 html.text += `<tr name="${jData[0].f0}" class="trshow"><td class="trshow" colspan="2">`;
@@ -37,7 +36,7 @@ function initiateHTMLFileGen(prefix: string, folderLocation: string) {
                 html.text += `</td></tr>`;
             }
             html.text += `</table>`;
-   
+
             if (prefix == 'o') {
                 let count: number = 0;
 
@@ -77,24 +76,24 @@ function initiateHTMLFileGen(prefix: string, folderLocation: string) {
 }
 
 function generateHTMLTags(jMainData: any, jChildData: any, primaryKey: any, html: any) {
-   
+
     html.text += `<table class="main" width="99%" align="right" cellspacing="1" style="background-color: black; table-layout: fixed;">`;
-    for(let key in jChildData){
+    for (let key in jChildData) {
         let childElements = jMainData.filter((item: any) => item.f4 == jChildData[key].f3);
-            if (childElements.length > 0) {
-                html.text += `<tr name="${(jChildData[key].f0)-1}" onclick='rowstatus("${jChildData[key].f0}")'><td width="220" class="pk" colspan="2">${jChildData[key].f5}</td></tr>`;
-                html.text += `<tr name="${jChildData[key].f0}" class="trshow"><td class="trshow" colspan="2">`;
-                generateHTMLTags(jMainData, childElements, jChildData[key].f3, html); // first key value
-                html.text += `</td></tr>`;
-            }else{
-                let value : string = unescape(jChildData[key].f6);
-                html.text += `<tr name="${jChildData[key].f0}" ondblclick='dc(this)'><td width="220" class='${jChildData[key].f8}' data-f2="${jChildData[key].f2}">${jChildData[key].f5}</td><td class='value ${jChildData[key].f8}'>${value}</td></tr>`;
-            }
+        if (childElements.length > 0) {
+            html.text += `<tr name="${(jChildData[key].f0) - 1}" onclick='rowstatus("${jChildData[key].f0}")'><td width="220" class="pk" colspan="2">${jChildData[key].f5}</td></tr>`;
+            html.text += `<tr name="${jChildData[key].f0}" class="trshow"><td class="trshow" colspan="2">`;
+            generateHTMLTags(jMainData, childElements, jChildData[key].f3, html); // first key value
+            html.text += `</td></tr>`;
+        } else {
+            let value: string = unescape(jChildData[key].f6);
+            html.text += `<tr name="${jChildData[key].f0}" ondblclick='dc(this)'><td width="220" class='${jChildData[key].f8}' data-f2="${jChildData[key].f2}">${jChildData[key].f5}</td><td class='value ${jChildData[key].f8}'>${value}</td></tr>`;
+        }
     }
     html.text += `</table>`;
 }
 
-var getHTML = function(htmlFile: string){
+var getHTML = function (htmlFile: string) {
     return fs.readFileSync(htmlFile, 'utf8');
 }
 
@@ -103,7 +102,7 @@ var getScreenNames = function (prefix: string, folderPath: string) {
     let oFiles: string[] = fs.readdirSync(folderPath, 'utf8');
     try {
         for (let idx = 0; idx < oFiles.length; idx++) {
-            if (oFiles[idx].startsWith(prefix) && oFiles[idx].indexOf('html')>=0) {
+            if (oFiles[idx].startsWith(prefix) && oFiles[idx].indexOf('html') >= 0) {
                 screenList.push(oFiles[idx].toString().substring(1));
             }
         }
