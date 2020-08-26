@@ -4,3 +4,7 @@ out
 *.vsix
 **/.vscode-test/**
 **/.vscode test/**
+**/test/*
+.vscode
+./test
+**/.vscode
