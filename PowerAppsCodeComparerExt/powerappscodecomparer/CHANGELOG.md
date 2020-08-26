@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.0
+
+Updated code to provide new features 
+
+- New screen to show selection of screen Manual or Autos
+
 ## 0.0.7
 
 Change log updated
