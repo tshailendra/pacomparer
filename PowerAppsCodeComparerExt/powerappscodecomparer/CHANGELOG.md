@@ -4,7 +4,7 @@
 
 Updated code to provide new features 
 
-- New screen to show selection of screen Manual or Autos
+- New screen to show selection of PowerApps file Manual or Auto Run
 
 ## 0.0.7
 
