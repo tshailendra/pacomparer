@@ -20,7 +20,7 @@ var html = `
         .tblscreens { table-layout: fixed; background-color: grey; }
         .selheader { text-align: center; font-weight: bold; font-size: 13px; color: white; background-color: blueviolet; }
         .runheader { text-align: right; font-size: 17px; color: white; background-color: blueviolet; line-height: 35px; }
-
+        .version { text-align: right; margin: auto;width:80%;font-style: italic;color: #c4c4c4; line-height: 25px;  }
         .selectedrow { background-color: beige; }
         .selexectype { background-color: beige; color: black; }
         .ui-button { width: 99%; height: 35px; font-size: 15px; background-color: lightgray; border-radius: 4px; }
@@ -38,6 +38,7 @@ var html = `
 
     <br><br>
     <div style="width: 100%;">
+        <div class="version"><span id="ver"></span></div>
         <table width="80%" align="center" cellpadding="1" cellspacing="1" class="tblscreens">
             <thead>
             <tr class="runheader">
@@ -153,6 +154,8 @@ var html = `
 
     <script>
         const vscode = acquireVsCodeApi();
+        var version = "v0.1.1";
+
         $(document).ready(function() {
             // on load hide
             $("#btnExecute").prop('disabled',true);
@@ -160,6 +163,7 @@ var html = `
             $("#showresults").hide();
             $("#autorun").hide();
             $("#error").hide();
+            $("#ver").text(version);
 
             $("input[name='exectype']").click(function() {
                 clearData();
@@ -201,11 +205,6 @@ var html = `
                         '{"name":"' + $("#idnFileName").text() + '","path":"1"}]'
                 });
             });
-
-            /*
-             text: '[{"name":"' + $("#idoFileName").text() + '","path":"' + $("#idoFilePath").text() + '" + },' +
-                        '{"name":"' + $("#idnFileName").text() + '","path":"' + $("#idnFilePath").text() + '"}]'
-            */
 
             $("#btnExecute").click(function() {
                 vscode.postMessage({
