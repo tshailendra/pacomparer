@@ -133,7 +133,7 @@ td.property{ padding-left: 10px; }
 
 <script type="text/javascript">
 var selRow;
-var version = "v0.1.1";
+var version = "v0.1.2";
 const vscode = acquireVsCodeApi();
 const status = document.getElementById('status');
 const modal = document.getElementById("myModal");

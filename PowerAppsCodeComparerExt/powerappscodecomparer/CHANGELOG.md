@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.2
+
+- Removed temporary folder name in comparison screen
+
 ## 0.1.1
 
 - Screen details are displayed in treeview structure

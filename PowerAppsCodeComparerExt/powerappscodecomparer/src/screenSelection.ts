@@ -154,7 +154,7 @@ var html = `
 
     <script>
         const vscode = acquireVsCodeApi();
-        var version = "v0.1.1";
+        var version = "v0.1.2";
 
         $(document).ready(function() {
             // on load hide
