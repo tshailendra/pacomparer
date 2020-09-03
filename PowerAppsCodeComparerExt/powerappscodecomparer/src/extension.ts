@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import JSZip = require("jszip");
+import { join } from "path";
 const htmlcontainer = require("./htmlcontainer");
 const screen = require("./screenSelection");
 const view = require("./view");
@@ -12,7 +13,7 @@ let tempFolderList: string[] = new Array();
 let tempAllFoldersExtracted: Boolean[] = new Array(false, false);
 let panel: vscode.WebviewPanel;
 let screenList = new Array();
-let customFilePaths : string[] = new Array();
+let customFilePaths: string[] = new Array();
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand(
@@ -39,7 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 
 			// clear temp folder names
-			tempFolderList = []; 
+			tempFolderList = [];
 			tempAllFoldersExtracted = [false, false];
 
 			// Create and show panel
@@ -57,10 +58,9 @@ export function activate(context: vscode.ExtensionContext) {
 			panel.webview.onDidReceiveMessage(
 				(message) => {
 					switch (message.command) {
-						case "alert":
-							let oFileContent = fs.readFileSync(path.join(tempFolderList[0], "o" + message.text));
-							let nFileContent = fs.readFileSync(path.join(tempFolderList[1], "n" + message.text));
-							panel.webview.html = htmlcontainer(oFileContent, nFileContent, screenList, message.text);
+						case "screenchange":
+							let fileContent = fs.readFileSync(path.join(tempFolder, message.text), "utf8");
+							panel.webview.html = htmlcontainer(fileContent, screenList, message.text);
 							return;
 						case "old":
 							// receives msg from html button click
@@ -75,7 +75,7 @@ export function activate(context: vscode.ExtensionContext) {
 										customFilePaths[0] = fpath;
 										// sends msg to window.addEventListener
 										panel.webview.postMessage({ index: 1, filename: fname, filepath: fpath });
-									});									
+									});
 								});
 							return;
 
@@ -92,7 +92,7 @@ export function activate(context: vscode.ExtensionContext) {
 										customFilePaths[1] = fpath;
 										// sends msg to window.addEventListener
 										panel.webview.postMessage({ index: 2, filename: fname, filepath: fpath, patharray: fpath.split('\\') });
-									});	
+									});
 								});
 							return;
 
@@ -111,7 +111,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 									// temp/msappfileV1/
 									let appfldr = path.join(tempFolder, path.basename(customFilePaths[item.path], ".msapp"));
-									tempFolderList.push(appfldr);
+									tempFolderList[item.path] = appfldr;
 									fs.mkdirSync(appfldr);
 									extractOriginalFiles(data, appfldr, "Controls", count, false);
 
@@ -345,21 +345,14 @@ function storeControlData() {
 			//}
 		}
 
-		if (view.createHTML(tempFolderList)) {
-			screenList = view.getScreenNames("o", tempFolderList[0]);
+		if (view.createHTML(tempFolderList, tempFolder)) {
+			screenList = view.getScreenNames(tempFolder);
 			deleteTempFiles(true);
 
 			let message = screenList[0]; //"App.html";
-			let oFileContent = fs.readFileSync(
-				path.join(tempFolderList[0], "o" + message),
-				"utf8"
-			);
-			let nFileContent = fs.readFileSync(
-				path.join(tempFolderList[1], "n" + message),
-				"utf8"
-			);
+			let fileContent = fs.readFileSync(path.join(tempFolder, message), "utf8");
 
-			panel.webview.html = htmlcontainer(oFileContent, nFileContent, screenList, message);
+			panel.webview.html = htmlcontainer(fileContent, screenList, message);
 		} else {
 			vscode.window.showErrorMessage("Error processing data");
 		}
@@ -581,6 +574,41 @@ function addExtraRows(ofName: string, nfName: string) {
 		}
 	}
 
+	// REMOVE CHILD NODES IF PARENT STATUS IS D or A
+	for (let i = 0; i < nJArray.length; i++) {
+		if (nJArray[i].f8 == 'D' || nJArray[i].f8 == 'A') {
+			let f2: string = nJArray[i].f2 + '|' + nJArray[i].f5;
+			for (let j = i + 1; j < nJArray.length; j++) {
+				if (nJArray[j].f2.startsWith(f2)) {
+					nJArray.splice(j, 1);
+					j--;
+				}
+				else {
+					i = j - 1;
+					break;
+				}
+			}
+		}
+	}
+
+	// REMOVE CHILD NODES IF PARENT STATUS IS D or A
+	for (let i = 0; i < oJArray.length; i++) {
+		if (oJArray[i].f8 == 'D' || oJArray[i].f8 == 'A') {
+			let f2: string = oJArray[i].f2 + '|' + oJArray[i].f5;
+			for (let j = i + 1; j < oJArray.length; j++) {
+				if (oJArray[j].f2.startsWith(f2)) {
+					oJArray.splice(j, 1);
+					j--;
+				}
+				else {
+					i = j - 1;
+					break;
+				}
+			}
+		}
+	}
+
+
 	try {
 		fs.writeFileSync(nfName, JSON.stringify(nJArray), "utf8");
 		fs.writeFileSync(ofName, JSON.stringify(oJArray), "utf8");
@@ -590,6 +618,7 @@ function addExtraRows(ofName: string, nfName: string) {
 		);
 	}
 }
+
 
 function getParentKey(currentKey: number, data: any) {
 	let finalKey: number = 0;

@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.1
+
+- Screen details are displayed in treeview structure
+- Only the parent node of Added/Deleted controls are displayed.  Rest child nodes are ignored
+
 ## 0.1.0
 
 Updated code to provide new features 

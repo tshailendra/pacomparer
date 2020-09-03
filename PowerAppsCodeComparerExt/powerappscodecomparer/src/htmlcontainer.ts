@@ -1,4 +1,4 @@
-var css = function (data1: string, data2: string, screenList: any, selectedScreen: string) {
+var css = function (data1: string, screenList: any, selectedScreen: string) {
 
     let dropdown: string = `<select id="screennames" onchange="screenchange()"><option value=""></option>`;
     if (screenList.length > 0) {
@@ -19,41 +19,64 @@ var css = function (data1: string, data2: string, screenList: any, selectedScree
 <html>
 
 <head>
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 </head>
 <body>
 <style>
-html, body { height: 100%; margin: 0px; color: black; background-color: white;}
-.flex-topbottom { display: flex; flex-direction: column; width: 100%; margin: 0px; height: 100%; }
+html, body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; height: 100%; width:99%; overflow:hidden; margin: 0px;}
+.flex-topbottom { display: flex; flex-direction: column; width: 98%; margin: 0px; height: 95%; }
 .flex-toponly { line-height: 30px; width: 100%; border-bottom: 1px solid #808080; }
-.flex-bottomonly { height: 95%; width: 100%; background-color: white; }
-.flex-leftright { margin: 0px; display: flex; flex-direction: row; height: 100%; overflow: hidden; }
-.flex-leftonly, .flex-rightonly { width: 50%; height: 100%; overflow: scroll; }
-.flex-leftonly { border-right: 1px solid #808080; height: 100%; }
-.flex-rightonly { border-left: 1px solid #808080; height: 100%; }
+.flex-bottomonly { height: 98%; width: 100%; background-color: white; }
+
+#header{ margin: 4px; background-color: skyblue; border: 1px solid skyblue; color: white; border-radius: 5px; width: 99%; padding: 10px; }
+.container { width: 100%; height: 98%; margin: -2px; }
+.treetablescroll{ overflow: scroll; height: 100%; width: 100%; }
+.treetable { table-layout: fixed; width: 100%; height: 100%; border-collapse: collapse; }
+.treetable th { color: #333; text-align: center; padding: 10px 0; background: #fafafa; font-size: 13px; border: 1px solid #f1f1f1; }
+.treetable td { border: 1px solid #f1f1f1; font-size: 14px; color: black; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+td.property{ padding-left: 10px; }
+.treetable tr td:first-child { overflow: initial; }
+.treetable tr:hover{  background-color: #dae3ff; }
+.tdspan { border: 1px solid transparent; display: inline-block; width: 20px; height: 20px; line-height: 18px; text-align: center; vertical-align: top; font-size: 19px; position: relative; box-sizing: border-box; margin-top: 4px; border-radius: 50%; }
+.treetable tr td .tdspan:first-child { margin-left: -10px; }
+.tdspan.btntoggle { border: 1px solid #d9d9d9; position: relative; cursor: pointer; width: 22px; height: 22px;  background-color: whitesmoke;  z-index: 2;}
+.tdspan.btntoggle.is-close { background: #f1f1f1; border: 1px solid transparent; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); }
+.tdspan:before { position: absolute; content: ""; width: 1px; height: 34px;background: black; left: 51%; top: -25px; }
+.tdspan.last:after { position: absolute; content: ""; width: 18px; height: 1px; background: black; top: 50%; margin-top: -1px; left: -10px; }
+.tdspan p { display: block; width: 5px; height: 5px; margin-left: 8px; margin-top: 6px; background: #4d4c4c; border-radius: 50%; }
+.tdspan.last:before { display: none; }
+.tdspan.btntoggle:after { display: none; }
+.tdspan.btntoggle:before { display: none; }
+#treedata td { cursor: pointer;  }
+.treetable tr td .tdspan:first-child:after { display: none; }
+.spcontent { display: inline-block; padding: 7px; }
+
+.D { background-color: lightcoral; z-index: -3; border: 1px solid lightcoral; }
+.A { background-color: darkseagreen;z-index: -3; border: 1px solid darkseagreen; }
+.Y { background-color: gainsboro; z-index: -3;border: 1px solid gainsboro; }
+
 .c1 { display: none; }
 .c2 { display: none; }
-.pk { background-color: floralwhite;}
-.pk:before { content: "\\2796"; font-size: 8px; color: #777; float: left; margin-left: 2px; margin-right: 7px; }
-.active::before { content: "\\02795";  }
+
 .main tr { background-color: white; cursor: pointer;  line-height: 25px; }
 .screen { background-color: blueviolet; font-weight: bold; color: white; font-size: 14px }
 .value { max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.modal { display: none;  position: fixed; z-index: 1; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+.modal { display: none;  position: fixed; z-index: 10; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
 .mcontent { position: relative; background-color: #fefefe; margin: auto; padding: 0; border: 1px solid #888; width: 80%; box-shadow: 0 4px 8px 0 rgba(150,150,0,0.6),0 6px 20px 0 rgba(150,150,0,0.19); }
 .header { font-size: 20px; font-weight: bold; color: blue; }
 .header2 { margin:20px; font-size: 18px;  font-weight: bold; }
 .exit { color: red; float: right; }
 .exit:hover, .exit:focus { color: red; text-decoration: none; cursor: pointer; }
 .mbody { padding: 2px 8px;}
-
-.D { background-color: lightcoral; border: 1px solid lightcoral; }
-.A { background-color: darkseagreen; border: 1px solid darkseagreen; }
-.Y { background-color: gainsboro; border: 1px solid gainsboro; }
+ .version { text-align: right; margin: auto;width:99%; font-style: italic;color: #c4c4c4; line-height: 8px;  }
 .setting { line-height: 12px; padding: 5px; border-radius: 10px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; display: inline-block; width: 80px; text-align: center; }
 .countsetting { vertical-align: central; line-height: 8px; padding: 5px; border-radius: 10px; border-bottom-left-radius: 0px; border-top-left-radius: 0px; display: inline-block; width: 30px; text-align: center; background-color: white; }
 .selectedrow { background-color: aquamarine; }
+.tooltip-styling{  background:green !important; color: red !important; }
 
 </style>
 
@@ -71,17 +94,21 @@ html, body { height: 100%; margin: 0px; color: black; background-color: white;}
 <td width="20%" align="right">
 <span id="status"></span> Screen: ${dropdown}</td></tr></table>
 </div>
+
 <div class="flex-bottomonly">
-<div class="flex-leftright">
-<div id="leftdiv" onscroll="leftdivscroll()" class="flex-leftonly">
-${data1}
+<table class="treetable"  align="center">
+<thead>
+<tr><th width="20%" style="border-left: 1px solid black;">Controls</th><th width="39%"><span id="oversion"></span></th><th width="41%"><span id="nversion"></span></th></tr>
+</thead>
+</table>
+<div class="container">
+<div class="treetablescroll">
+    <table class="treetable" align="center">
+    ${data1}
+    </table>
 </div>
-<div id="rightdiv" onscroll="rightdivscroll()" class="flex-rightonly">
-${data2}
-</div>
-</div>
-</div>
-</div>
+<div class="version"><span id="ver"></span></div>
+</div></div>
 
 <div id="myModal" class="modal">
 <div class="mcontent">
@@ -102,20 +129,60 @@ ${data2}
 <table width="100%">
 <tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 </table>
-
-</div>
-</div>
-</div>
-</div>
+</div></div></div></div>
 
 <script type="text/javascript">
+var selRow;
+var version = "v0.1.1";
 const vscode = acquireVsCodeApi();
 const status = document.getElementById('status');
 const modal = document.getElementById("myModal");
 
+$( document ).ready(function() {
+
+    $("#oversion").text($("#v1").text()); // value updated in view.ts
+    $("#nversion").text($("#v2").text()); // value updated in view.ts
+    $("#ver").text(version);
+    $("#totAdd").text($("#addcount").attr('data-addcount'));
+    $("#totDel").text($("#delcount").attr('data-delcount'));
+    $("#totDiff").text($("#diffcount").attr('data-diffcount'));
+
+    $(document.body).delegate('.expand','click',function() {
+        var state = $(this).text();
+        var refpath = $(this).attr('data-refpath');
+        if(state== "-"){
+            $("tr[name^='" + refpath + "']").hide();
+            $(this).text("+");
+        }
+        else{
+            $("tr[name^='" + refpath + "']").show();
+            $(this).text("-");
+        }
+    });
+
+    $("#treedata tr").dblclick(function() {
+        modal.style.display = "block";
+        $("#idtreepath").text($(this).find('td span.spcontent').attr('title'));
+        $("#opname").text($(this).find('td span.spcontent').text());
+        $("#npname").text($(this).find('td span.spcontent').text());
+
+        $("#opvalue").html($(this).find('td')[1].innerText.split('|').join('<br>'));
+        $("#npvalue").html($(this).find('td')[2].innerText.split('|').join('<br>'));
+
+        selRow = this;
+        $(this).addClass('selectedrow');
+    });
+
+});
+
+function exitModal() {
+    modal.style.display = "none";
+    selRow.classList.remove('selectedrow');
+}
+
 function screenchange(){
     vscode.postMessage({
-        command: 'alert',
+        command: 'screenchange',
         text: document.getElementById("screennames").value
     });
 }
@@ -124,102 +191,6 @@ function setScreenName(){
     var ctrl = document.getElementById("screennames");
     if(ctrl.options.length>0){ ctrl.selectedIndex = 0; }
 }
-
-function rowstatus(id) {
-
-    var nodes = document.getElementsByName(id);
-    for (var i = 0; i < nodes.length; i++) {
-        if (nodes[i].style.display == 'none') {
-            nodes[i].style.display = "";
-        }
-        else {
-            nodes[i].style.display = "none";
-        }
-    }
-
-    nodes = document.getElementsByName(id - 1);
-    for (var i = 0; i < nodes.length; i++) {
-        if (nodes[i].children[0].className.indexOf("pk")==0) {
-            nodes[i].children[0].classList.toggle("active");
-        }
-    }
-}
-
-var leftdiv = document.getElementById('leftdiv');
-var rightdiv = document.getElementById('rightdiv');
-
-function leftdivscroll() {
-    rightdiv.scrollTop = leftdiv.scrollTop;
-}
-
-function rightdivscroll() {
-    leftdiv.scrollTop= rightdiv.scrollTop;
-}
-
-const idtreepath = document.getElementById("idtreepath");
-const opname = document.getElementById("opname");
-const opvalue = document.getElementById("opvalue");
-const npname = document.getElementById("npname");
-const npvalue = document.getElementById("npvalue");
-
-let selectedrowleft1 = null;
-let selectedrowleft2 = null;
-let selectedrowright1 = null;
-let selectedrowright2 = null;
-
-
-function dc(r) {
-    modal.style.display = "block";
-    var rows = document.getElementsByName(r.getAttribute("name"));
-    idtreepath.innerText = r.firstElementChild.dataset.f2;
-    opname.innerText = rows[0].firstElementChild.innerText;
-    opvalue.innerHTML = rows[0].lastElementChild.innerText.split('|').join('<br>');
-    selectedrowleft1 = rows[0].firstElementChild;
-    selectedrowleft2 = rows[0].lastElementChild;
-    
-    if (rows.length > 2) {
-        npname.innerText = rows[2].firstElementChild.innerText;
-        npvalue.innerHTML = rows[2].lastElementChild.innerText.split('|').join('<br>');
-
-        selectedrowright1 = rows[2].firstElementChild;
-        selectedrowright2 = rows[2].lastElementChild;
-
-    }
-    else {
-        npname.innerText = rows[1].firstElementChild.innerText;
-        npvalue.innerHTML = rows[1].lastElementChild.innerText.split('|').join('<br>');
-
-        selectedrowright1 = rows[1].firstElementChild;
-        selectedrowright2 = rows[1].lastElementChild;
-    }
-
-    selectedrowleft1.classList.add('selectedrow');
-    selectedrowleft2.classList.add('selectedrow');
-    selectedrowright1.classList.add('selectedrow');
-    selectedrowright2.classList.add('selectedrow');
-}
-
-function exitModal() {
-    modal.style.display = "none";
-
-    selectedrowleft1.classList.remove('selectedrow');
-    selectedrowleft2.classList.remove('selectedrow');
-    selectedrowright1.classList.remove('selectedrow');
-    selectedrowright2.classList.remove('selectedrow');
-
-}
-
-const idaddcount = document.getElementById('addcount');
-const iddiffcount = document.getElementById('diffcount');
-const iddelcount = document.getElementById('delcount');
-
-const totAdd = document.getElementById('totAdd');
-const totDel = document.getElementById('totDel');
-const totDiff = document.getElementById('totDiff');
-
-totAdd.innerText =  idaddcount.getAttribute('data-addcount');
-totDel.innerText = iddelcount.getAttribute('data-delcount');
-totDiff.innerText =  iddiffcount.getAttribute('data-diffcount');
 
 </script>
 
