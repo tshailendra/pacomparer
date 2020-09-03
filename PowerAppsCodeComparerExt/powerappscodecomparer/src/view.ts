@@ -42,7 +42,7 @@ function initHTML(ofolderLocation: string, nfolderLocation: string, tempFolder: 
         let v1: string = "";
         let v2: string = "";
         
-        if (ofolderLocation.indexOf('/') > 0) {
+        if (ofolderLocation.includes('/')) {
             loc = ofolderLocation.split('/');
             v1 = loc[loc.length - 1];
 
