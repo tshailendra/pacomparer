@@ -41,7 +41,7 @@ function initHTML(ofolderLocation: string, nfolderLocation: string, tempFolder: 
         let loc: any;
         let v1: string = "";
         let v2: string = "";
-        
+
         if (ofolderLocation.includes('/')) {
             loc = ofolderLocation.split('/');
             v1 = loc[loc.length - 1];
@@ -56,19 +56,19 @@ function initHTML(ofolderLocation: string, nfolderLocation: string, tempFolder: 
             loc = nfolderLocation.split('\\');
             v2 = loc[loc.length - 1];
         }
-        
-        let html: any = { text: '' }
 
+        let html: any = { text: '' };
+        let ids: any = { data: '' };
 
-        html.text = `<tbody id="treedata">`;
+        html.text = `<tbody>`;
         html.text += `<tr><td width="20%"></td><td width="40%"></td><td width="40%"></td></tr>`;
         let ochildElements = ojData.filter((item: any) => item.f4 == ojData[0].f3);
         let nchildElements = njData.filter((item: any) => item.f4 == njData[0].f3);
 
         if (ochildElements.length > 0 && nchildElements.length > 0) {
-            generateTree(ojData, ochildElements, njData, nchildElements, ojData[0].f3, ojData[0].f2, 3, html); // first key value
+            generateTree(ojData, ochildElements, njData, nchildElements, ojData[0].f3, ojData[0].f2, 3, html, ids); // first key value
         }
-        
+
         html.text += `<tr style="height: 0px; visibility: hidden"><td width="20%"></td><td width="40%"></td><td width="40%">`;
         let count: number = 0;
         for (let key in ojData) {
@@ -92,7 +92,11 @@ function initHTML(ofolderLocation: string, nfolderLocation: string, tempFolder: 
                 count++;
             }
         }
+
         html.text += `<span id='addcount' style='visibility: hidden' data-addcount='${count}'></span>`;
+        ids.data += `{"t": "", "v": ""}`;
+
+        html.text += `<span id='changeids'  data-rows='[${ids.data}]'></span>`;
         html.text += `<span style="visibility:hidden" id="v1">${v1}</span>`;
         html.text += `<span style="visibility:hidden" id="v2">${v2}</span>`;
         html.text += `</td></tr>`;
@@ -101,7 +105,7 @@ function initHTML(ofolderLocation: string, nfolderLocation: string, tempFolder: 
     }
 }
 
-function generateTree(ojMainData: any, ojChildData: any, njMainData: any, njChildData: any, primaryKeyPath: string, treepath: string, spanCount: number, html: any) {
+function generateTree(ojMainData: any, ojChildData: any, njMainData: any, njChildData: any, primaryKeyPath: string, treepath: string, spanCount: number, html: any, ids: any) {
 
     let ochildElements: any;
     let nchildElements: any;
@@ -126,31 +130,30 @@ function generateTree(ojMainData: any, ojChildData: any, njMainData: any, njChil
             let treepath: string = "";
             let difference: string = "";
             let keyPath: string = "";
-            let fk: string = "";
+            let parent: string = "";
 
             if (!(njChildData[key] == undefined)) {
                 nvalue = unescape(njChildData[key].f6);
                 difference = njChildData[key].f8;
-                fk = njChildData[key].f4;
+                parent = njChildData[key].f3;
 
                 keyPath = primaryKeyPath + "_" + njChildData[key].f3;
                 property = njChildData[key].f5;
                 treepath = njChildData[key].f2 + '|' + njChildData[key].f5;
-
             }
 
             if (!(ojChildData[key] == undefined)) {
                 ovalue = unescape(ojChildData[key].f6);
                 difference = ojChildData[key].f8;
-                fk = ojChildData[key].f4;
+                parent = ojChildData[key].f3;
 
                 keyPath = primaryKeyPath + "_" + ojChildData[key].f3;
                 property = ojChildData[key].f5;
                 treepath = ojChildData[key].f2 + '|' + ojChildData[key].f5;
             }
 
-            html.text += createTreeTags(spcount, keyPath, primaryKeyPath, property, treepath, 'btntoggle', ovalue, nvalue, difference);
-            generateTree(ojMainData, ochildElements, njMainData, nchildElements, keyPath, treepath, spcount + 1, html); // first key value
+            html.text += createTreeTags(spcount, parent, keyPath, primaryKeyPath, property, treepath, 'btntoggle', ovalue, nvalue, difference, ids);
+            generateTree(ojMainData, ochildElements, njMainData, nchildElements, keyPath, treepath, spcount + 1, html, ids); // first key value
 
         } else {
 
@@ -174,20 +177,24 @@ function generateTree(ojMainData: any, ojChildData: any, njMainData: any, njChil
 
                 if (ojChildData[key].f8 == "D") {
                     difference = ojChildData[key].f8;
-                    refPath = ojChildData[key].f3;
+                    refPath = ojChildData[key].f3;  // parent_key
                     property = ojChildData[key].f5;
                 }
             }
 
-            html.text += createTreeTags(spcount, refPath, primaryKeyPath, property, treepath, 'last', ovalue, nvalue, difference);
+            html.text += createTreeTags(spcount, refPath, refPath, primaryKeyPath, property, treepath, 'last', ovalue, nvalue, difference, ids);
         }
     }
 }
 
-function createTreeTags(tagCount: number, refPath: string, keypath: string, property: string, treepath: string, classtag: string, ovalue: string, nvalue: string, difference: string) {
+function createTreeTags(tagCount: number, parent: string, refPath: string, keypath: string, property: string, treepath: string, classtag: string, ovalue: string, nvalue: string, difference: string, ids: any) {
     let html: string = '';
 
-    html += `<tr name="${keypath}"><td class="${difference}">`;
+    if (difference == "Y" || difference == "A" || difference == "D") {
+        ids.data += `{"t": "${difference}", "v": "${parent}"},`;
+    }
+
+    html += `<tr id="${parent}" name="${keypath}"><td class="${difference}">`;
     for (let i = 0; i < tagCount; i++) {
         if (i == tagCount - 1) {
             html += `<span title="${treepath}" class="spcontent">${property}</span>`;
