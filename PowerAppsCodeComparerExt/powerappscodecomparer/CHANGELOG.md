@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.3
+
+- Provided navigation icons (up/down arrows) to scroll to the next change in code
+
 ## 0.1.2
 
 - Removed temporary folder name in comparison screen

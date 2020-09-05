@@ -64,6 +64,20 @@ Or press Ctrl + Shift + X and search for __"PowerApps Code Comparer"__
     <li><i>Screen(s) which are not in either of the selected files will be ignored for comparison</i></li>
     </ol>
 
+
+- Navigation
+
+    <ul>
+    <li>
+    Click the navigation icon (up/down arrows) to scroll to the nearest change
+
+    ![Navigation](https://github.com/tshailendra/pacomparer/blob/master/PowerAppsCodeComparerExt/powerappscodecomparer/images/navigation.png?raw=true)
+    </li>
+    <li>
+    If the nodes are collapsed, on click of any navigation icon, the nodes are automatically expanded
+    </li>
+    </ul>
+
 ## Known Issues
 
 The code is not tested for components developed using pcf.

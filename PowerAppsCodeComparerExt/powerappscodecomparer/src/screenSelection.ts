@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+const meta = require('../package.json');
 
 var screenSel = function (message: string) {
     return html;
@@ -151,10 +152,9 @@ var html = `
         </div>
     </div>
 
-
     <script>
         const vscode = acquireVsCodeApi();
-        var version = "v0.1.2";
+        var version = "v${meta.version}";
 
         $(document).ready(function() {
             // on load hide

@@ -1,13 +1,12 @@
 import * as vscode from "vscode";
 import JSZip = require("jszip");
-import { join } from "path";
 const htmlcontainer = require("./htmlcontainer");
 const screen = require("./screenSelection");
 const view = require("./view");
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
-
+ 
 let tempFolder = "";
 let tempFolderList: string[] = new Array();
 let tempAllFoldersExtracted: Boolean[] = new Array(false, false);
